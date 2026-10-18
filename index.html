@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mailroom — score your resume before it's posted</title>
+  <meta name="description" content="Drop a PDF resume into the envelope and get a score, the skills found and the skills missing. A front-end mock." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="desk">
+
+    <header class="masthead">
+      <p class="brand"><span class="brand-mark" aria-hidden="true">✉</span> Mailroom</p>
+      <p class="brand-sub">Resume sorter &amp; scorer</p>
+    </header>
+
+    <main class="stage">
+
+      <!-- ── The mail cover: your upload surface ─────────────────── -->
+      <section class="envelope-wrap" id="envelopeWrap" aria-label="Upload your resume">
+        <div class="envelope" id="envelope">
+          <div class="flap" aria-hidden="true"></div>
+          <div class="wax" aria-hidden="true">M</div>
+
+          <div class="face">
+            <div class="post">
+              <div class="postmark" aria-hidden="true">
+                <span class="postmark-line">MAILROOM</span>
+                <span class="postmark-line postmark-line--big">01</span>
+                <span class="postmark-line">SORTED DAILY</span>
+              </div>
+
+              <div class="stamp" aria-hidden="true">
+                <span class="stamp-top">Resume</span>
+                <span class="stamp-big">PDF</span>
+                <span class="stamp-bottom">1st class</span>
+              </div>
+            </div>
+
+            <address class="address">
+              <span class="address-label">To</span>
+              <span class="address-line">The Hiring Team</span>
+              <span class="address-line address-line--soft">Applicant Tracking Dept.</span>
+              <span class="address-line address-line--soft">Desk 01, Mailroom</span>
+            </address>
+
+            <div class="slot" id="slot">
+              <div class="slot-idle" id="slotIdle">
+                <p class="slot-hint">Drop your resume on the envelope</p>
+                <p class="slot-sub">PDF · up to 5 MB · it never leaves your browser</p>
+                <button class="btn btn--ghost" type="button" id="pickBtn">Choose a file</button>
+              </div>
+
+              <div class="slot-busy" id="slotBusy" hidden>
+                <p class="slot-file" id="slotFile"></p>
+                <div class="progress"><div class="progress__bar" id="progressBar"></div></div>
+                <p class="slot-step" id="slotStep"></p>
+              </div>
+            </div>
+
+            <p class="status" id="status" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <input type="file" id="fileInput" accept="application/pdf,.pdf" hidden />
+      </section>
+
+      <!-- ── The letter that comes back out ──────────────────────── -->
+      <section class="report-slot" id="reportSlot" hidden></section>
+
+    </main>
+
+    <footer class="foot">
+      <p>Mailroom is a front-end mock: no file is uploaded and the scores are simulated in your browser.</p>
+    </footer>
+
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
