@@ -1,8 +1,10 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import multer from 'multer';
 import { connectDb } from './config/db.js';
 import analyzeRouter from './routes/analyze.js';
+import { HttpError } from './utils.js';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -16,10 +18,19 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/analyze', analyzeRouter);
 
-/* Anything thrown inside a route ends up here rather than killing
-   the process, so one bad PDF cannot take the server down. */
+/* The single place errors become responses. Controllers throw
+   HttpError (via badRequest in utils.js) and land here; anything
+   unexpected becomes a 500 rather than leaking a stack trace. */
 app.use((err, req, res, next) => {
-  console.error(err);
+  /* Multer reports its own limits with a code rather than a status. */
+  if (err instanceof multer.MulterError) {
+    const tooBig = err.code === 'LIMIT_FILE_SIZE';
+    return res.status(tooBig ? 413 : 400).json({
+      error: tooBig ? 'That file is over 5 MB. Try a lighter PDF.' : err.message
+    });
+  }
+
+  if (!(err instanceof HttpError)) console.error(err);
   res.status(err.status || 500).json({ error: err.message || 'Something went wrong.' });
 });
 

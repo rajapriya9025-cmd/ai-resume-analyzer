@@ -1,4 +1,5 @@
 import multer from 'multer';
+import { badRequest } from '../utils.js';
 
 const MAX_BYTES = 5 * 1024 * 1024;
 
@@ -10,9 +11,7 @@ const storage = multer.memoryStorage();
 function fileFilter(req, file, cb) {
   const isPdf = file.mimetype === 'application/pdf' || /\.pdf$/i.test(file.originalname);
   if (isPdf) return cb(null, true);
-  const error = new Error('That is not a PDF. Upload a PDF resume.');
-  error.status = 400;
-  cb(error);
+  cb(badRequest('That is not a PDF. Upload a PDF resume.'));
 }
 
 export const uploadResume = multer({

@@ -1,4 +1,5 @@
 import { createRequire } from 'node:module';
+import { badRequest } from '../utils.js';
 
 /* pdf-parse ships a CommonJS entry point whose index.js runs a debug
    harness that tries to read a sample PDF from disk when it is not
@@ -14,8 +15,6 @@ export async function extractText(buffer) {
     const { text } = await pdfParse(buffer);
     return text;
   } catch (cause) {
-    const error = new Error('Could not read that PDF. Is it a valid, unlocked file?');
-    error.status = 400;
-    throw error;
+    throw badRequest('Could not read that PDF. Is it a valid, unlocked file?');
   }
 }
